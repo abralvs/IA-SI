@@ -38,7 +38,6 @@ public class VetorOrdenado {
             this.cidades[pos] = cidade;
             this.numElementos++;
         }
-
     }
 
     public Cidade getPrimeiro(){
