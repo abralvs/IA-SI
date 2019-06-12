@@ -31,6 +31,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<LatLng> pontos;
     private Spinner inicio;
     private Spinner destino;
+    private ImageButton btnDebug;
+    Cidade initAux = null, destAux = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        btnDebug = findViewById(R.id.btnDebug);
         inicio = findViewById(R.id.spInicio);
         destino = findViewById(R.id.spDestino);
         btnTodasAdjacencias = findViewById(R.id.btnTodasAdjacencias);
@@ -86,21 +89,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnGerarRota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // pegando indices das ciades
-                Cidade init = null, dest = null;
-                for (int i = 0; i < 75; i++) {
-                    if (citys.getCidades().get(i).getNome().equals(inicio.getSelectedItem().toString()))
-                        init = citys.getCidades().get(i);
-
-                    if (citys.getCidades().get(i).getNome().equals(destino.getSelectedItem().toString()))
-                        dest = citys.getCidades().get(i);
-                }
-
-                Toast.makeText(getBaseContext(),"init: "+init.getNome()+"  destino: "+dest.getNome(),Toast.LENGTH_LONG).show();
+                pegaCidadesEcolhidas();
+                Toast.makeText(getBaseContext(),"init: "+initAux.getNome()+"  destino: "+destAux.getNome()
+                        +" - id: "+destAux.getId(),Toast.LENGTH_LONG).show();
                 // chamando método guloso
                 MelhorEscolha gulosa = new MelhorEscolha();
-                gulosa.Buscar(init, dest.getId());
+                gulosa.Buscar(initAux, destAux.getId());
 
                 pontos = new ArrayList<>();
                 for (Cidade c: gulosa.getCaminho())
@@ -119,7 +113,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnTodasAdjacencias.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 pontos = new ArrayList<>();
                 for (int i = 0; i < citys.getCidades().size();i++){
                     pontos.add(citys.getCidades().get(i).getCoordenadas());
@@ -136,5 +129,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
+
+        btnDebug.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pegaCidadesEcolhidas();
+
+                MelhorEscolha gulosa = new MelhorEscolha();
+                gulosa.Buscar(initAux, destAux.getId());
+
+                // adicionando todas as adijacencias (as que levam pro destino e as que não para formar a arvore)
+                pontos = new ArrayList<>();
+                for (Cidade c: gulosa.getCaminho()){
+                    if (c.getId() != destAux.getId()) {
+                        pontos.add(c.getCoordenadas());
+                        for (int i = 0; i < c.getAdj().size(); i++) {
+                            pontos.add(c.getAdj().get(i).getCidade().getCoordenadas());
+
+                            mMap.addPolyline(new PolylineOptions()
+                                    .addAll(pontos)
+                                    .width(5)
+                                    .color(Color.RED));
+
+                            pontos.remove(1);
+                        }
+                        pontos.removeAll(pontos);
+                    }
+                    // adicionando apenas a linha que leva ao destino com uma cor diferente
+
+                    // -----------------------------------------------------------
+
+                    pontos.removeAll(pontos);
+                    for (Cidade ci: gulosa.getCaminho())
+                        pontos.add(ci.getCoordenadas());
+
+                    mMap.addPolyline(new PolylineOptions()
+                            .addAll(pontos)
+                            .width(5)
+                            .color(Color.GREEN));
+                    pontos.removeAll(pontos);
+                }
+            }
+        });
+
+    }
+
+
+
+    public void pegaCidadesEcolhidas(){
+        // pegando indices das ciades
+        for (int i = 0; i < citys.getCidades().size(); i++) {
+            if (citys.getCidades().get(i).getNome().equals(inicio.getSelectedItem().toString()))
+                initAux = citys.getCidades().get(i);
+
+            if (citys.getCidades().get(i).getNome().equals(destino.getSelectedItem().toString()))
+                destAux = citys.getCidades().get(i);
+        }
     }
 }

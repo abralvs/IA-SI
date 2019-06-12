@@ -113,6 +113,7 @@
                 <ImageButton
                     android:layout_weight="1"
                     android:src="@mipmap/debug"
+                    android:id="@+id/btnDebug"
                     android:backgroundTint="#00FFFFFF"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
