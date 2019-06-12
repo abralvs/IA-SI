@@ -1,6 +1,6 @@
-package com.example.sergipetour;
+import java.util.ArrayList;
 
-class VetorOrdenado {
+public class VetorOrdenado {
     private int numElementos;
     private Cidade[] cidades;
 
@@ -15,8 +15,17 @@ class VetorOrdenado {
             this.numElementos = 1;
         }else{
             int pos = 0;
+            int id = 0;
             for(int i=0;i<this.numElementos;i++){
-                if(cidade.getDistancias().get(idObjetivo+1).distancia > this.cidades[pos].getDistancias().get(idObjetivo+1).distancia){
+                ArrayList<Distancia> d = cidade.getDistancias();
+                for(int j=0;j<d.size();j++){
+                    if(d.get(j).idCidade == idObjetivo){
+                        id = j;
+                        break;
+                    }
+                }
+
+                if(cidade.getDistancias().get(id).distancia > this.cidades[pos].getDistancias().get(id).distancia){
                     pos++;
                 }
             }
