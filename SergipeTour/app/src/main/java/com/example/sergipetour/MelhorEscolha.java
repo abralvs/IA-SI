@@ -1,5 +1,4 @@
 package com.example.sergipetour;
-
 import java.util.ArrayList;
 
 public class MelhorEscolha {
@@ -21,10 +20,16 @@ public class MelhorEscolha {
         }else{
             this.fronteira = new VetorOrdenado(origem.getAdj().size());
             for(Adjacencia city: origem.getAdj()){
-                if(!city.getCidade().isVisitado()){
-                    city.getCidade().setVisitado(true);
-                    this.fronteira.inserir(city.getCidade(), idObjetivo);
+                if(city.getCidade().getId() != idObjetivo){
+                    if(!city.getCidade().isVisitado()){
+                        city.getCidade().setVisitado(true);
+                        this.fronteira.inserir(city.getCidade(), idObjetivo);
+                    }
+                }else{
+                    this.caminho.add(city.getCidade());
+                    this.achou=true;
                 }
+
             }
             this.fronteira.mostrar(idObjetivo);
             if(this.fronteira.getPrimeiro() != null && this.achou == false){
