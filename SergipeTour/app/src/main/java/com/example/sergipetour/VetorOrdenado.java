@@ -1,3 +1,4 @@
+package com.example.sergipetour;
 import java.util.ArrayList;
 
 public class VetorOrdenado {
