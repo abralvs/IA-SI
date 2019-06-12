@@ -16,17 +16,22 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Cidades citys;
     private ImageButton btnTodasAdjacencias;
+    private boolean mostrandoTodasAdj = false;
+    private List<Polyline> arestas = new ArrayList<>();
     private ImageButton btnGerarRota;
     private ArrayList<LatLng> pontos;
     private Spinner inicio;
@@ -71,8 +76,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         // Adicionando todos os marcadores
+        mMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(this, R.raw.style));
         Marker m;
         for (int i = 0; i < citys.getCidades().size();i++) {
            mMap.addMarker(new MarkerOptions().position(citys.getCidades()
@@ -81,7 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .title(citys.getCidades().get(i).getNome()));
         }
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-10.758061, -37.317288),13));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-10.758061, -37.317288),10));
 
         btnGerarRota.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,19 +126,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
 
-                pontos = new ArrayList<>();
-                for (int i = 0; i < citys.getCidades().size();i++){
-                    pontos.add(citys.getCidades().get(i).getCoordenadas());
-                    for (int j = 0; j < citys.getCidades().get(i).getAdj().size();j++ ) {
-                        pontos.add(citys.getCidades().get(i).getAdj().get(j).getCidade().getCoordenadas());
+                if(!mostrandoTodasAdj){
+                    mostrandoTodasAdj = true;
+                    pontos = new ArrayList<>();
+                    for (int i = 0; i < citys.getCidades().size();i++){
+                        pontos.add(citys.getCidades().get(i).getCoordenadas());
+                        for (int j = 0; j < citys.getCidades().get(i).getAdj().size();j++ ) {
+                            pontos.add(citys.getCidades().get(i).getAdj().get(j).getCidade().getCoordenadas());
 
-                        mMap.addPolyline(new PolylineOptions()
-                                .addAll(pontos)
-                                .width(5)
-                                .color(Color.RED));
-                        pontos.remove(1);
+                            arestas.add(mMap.addPolyline(new PolylineOptions()
+                                    .addAll(pontos)
+                                    .width(5)
+                                    .color(Color.RED)));
+                            pontos.remove(1);
+                        }
+                        pontos.removeAll(pontos);
                     }
-                    pontos.removeAll(pontos);
+                }
+               else{
+                   for(Polyline aresta : arestas){
+                       aresta.remove();
+                 }
+                  mostrandoTodasAdj = false;
                 }
             }
         });
