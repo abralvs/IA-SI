@@ -27,7 +27,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ImageButton btnTodasAdjacencias;
     private ImageButton btnGerarRota;
     private ArrayList<LatLng> pontos;
-    private ArrayList<Marker> marcadores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +60,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Adicionando todos os marcadores
-        for (int i = 0; i < citys.getCidades().size();i++)
-            mMap.addMarker(new MarkerOptions().position(citys.getCidades()
+        Marker m;
+        for (int i = 0; i < citys.getCidades().size();i++) {
+           mMap.addMarker(new MarkerOptions().position(citys.getCidades()
                     .get(i)
                     .getCoordenadas())
                     .title(citys.getCidades().get(i).getNome()));
-
+        }
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-10.758061, -37.317288),13));
 

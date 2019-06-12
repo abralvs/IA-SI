@@ -23,25 +23,33 @@
         android:layout_marginBottom="2pt"
         android:layout_marginEnd="2pt"
         android:layout_marginStart="2pt"
+        android:orientation="horizontal"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="30pt">
 
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
+
             android:id="@+id/btnTodasAdjacencias"
-            android:layout_height="match_parent" />
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
+            android:src="@drawable/todas_as_rotas" />
 
         <ImageButton
-            android:layout_weight="1"
             android:id="@+id/btnGerarRota"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#12FFFFFF"
+            android:src="@drawable/gerar_rota" />
 
         <ImageButton
             android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
+
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
