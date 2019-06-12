@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,6 +29,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ImageButton btnTodasAdjacencias;
     private ImageButton btnGerarRota;
     private ArrayList<LatLng> pontos;
+    private Spinner inicio;
+    private Spinner destino;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +41,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        inicio = findViewById(R.id.spInicio);
+        destino = findViewById(R.id.spDestino);
         btnTodasAdjacencias = findViewById(R.id.btnTodasAdjacencias);
         btnGerarRota = findViewById(R.id.btnGerarRota);
 
+
+        // Setando cidades no spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.planets_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        inicio.setAdapter(adapter);
+        destino.setAdapter(adapter);
 
         AssetManager assetManager = getResources().getAssets();
         citys = new Cidades(assetManager);
@@ -73,17 +86,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnGerarRota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MelhorEscolha gulosa = new MelhorEscolha();
-                gulosa.Buscar(citys.getCidades().get(2), citys.getCidades().get(26).getId());
 
-                 pontos = new ArrayList<>();
+                // pegando indices das ciades
+                Cidade init = null, dest = null;
+                for (int i = 0; i < 75; i++) {
+                    if (citys.getCidades().get(i).getNome().equals(inicio.getSelectedItem().toString()))
+                        init = citys.getCidades().get(i);
+
+                    if (citys.getCidades().get(i).getNome().equals(destino.getSelectedItem().toString()))
+                        dest = citys.getCidades().get(i);
+                }
+
+                Toast.makeText(getBaseContext(),"init: "+init.getNome()+"  destino: "+dest.getNome(),Toast.LENGTH_LONG).show();
+                // chamando método guloso
+                MelhorEscolha gulosa = new MelhorEscolha();
+                gulosa.Buscar(init, dest.getId());
+
+                pontos = new ArrayList<>();
                 for (Cidade c: gulosa.getCaminho())
                     pontos.add(c.getCoordenadas());
 
                 mMap.addPolyline(new PolylineOptions()
                         .addAll(pontos)
                         .width(5)
-                        .color(Color.BLUE));
+                        .color(Color.GREEN));
 
                 pontos.removeAll(pontos);
             }

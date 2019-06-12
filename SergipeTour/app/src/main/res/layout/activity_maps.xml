@@ -4,11 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".MapsActivity" >
-
-
-
 
     <fragment
         android:id="@+id/map"
@@ -17,42 +13,111 @@
         android:layout_height="match_parent"/>
 
 
+    <android.support.v7.widget.CardView
+            android:layout_marginTop="5pt"
+            android:layout_marginEnd="5pt"
+            android:layout_marginStart="5pt"
+            android:elevation="5pt"
+            map:cardCornerRadius="5pt"
+            android:layout_width="match_parent"
+            android:layout_height="50pt">
 
-    <LinearLayout
-        android:background="#ffffff"
-        android:layout_marginBottom="2pt"
-        android:layout_marginEnd="2pt"
-        android:layout_marginStart="2pt"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:layout_width="match_parent"
-        android:layout_height="30pt">
+            <LinearLayout
+                android:layout_marginStart="2pt"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_marginEnd="2pt"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10pt"
+                    android:layout_marginStart="2pt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src="@mipmap/marcador_inicio"
+                        android:layout_width="15pt"
+                        android:layout_height="12pt" />
+
+                    <Spinner
+                        android:layout_marginStart="2pt"
+                        android:layout_width="match_parent"
+                        android:id="@+id/spInicio"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginEnd="2pt"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="2pt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src="@mipmap/marcador_destino"
+                        android:layout_width="15pt"
+                        android:layout_height="12pt" />
+
+                    <Spinner
+                        android:layout_marginStart="2pt"
+                        android:layout_width="match_parent"
+                        android:id="@+id/spDestino"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
 
-        <ImageButton
-
-            android:id="@+id/btnTodasAdjacencias"
+        <android.support.v7.widget.CardView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="#00FFFFFF"
-            android:src="@drawable/todas_as_rotas" />
+            android:layout_marginTop="70pt"
+            android:layout_gravity="right"
+            android:elevation="5pt"
+            map:cardCornerRadius="5pt"
+            android:layout_marginEnd="5pt"
+            android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/btnGerarRota"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="#12FFFFFF"
-            android:src="@drawable/gerar_rota" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-        <ImageButton
-            android:layout_weight="1"
-            android:backgroundTint="#00FFFFFF"
+                <ImageButton
+                    android:id="@+id/btnTodasAdjacencias"
+                    android:layout_width="25pt"
+                    android:layout_height="25pt"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    android:src="@mipmap/todas_as_rotas" />
+              <View
+                  android:layout_width="match_parent"
+                  android:background="#424242"
+                  android:layout_height="0.5dp"/>
 
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+                <ImageButton
+                    android:id="@+id/btnGerarRota"
+                    android:layout_width="25pt"
+                    android:layout_height="25pt"
+                    android:layout_weight="1"
+                    android:backgroundTint="#12FFFFFF"
+                    android:src="@mipmap/gerar_rota" />
 
-    </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="#424242"
+                    android:layout_height="0.5dp"/>
+
+                <ImageButton
+                    android:layout_weight="1"
+                    android:src="@mipmap/debug"
+                    android:backgroundTint="#00FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
 
 </FrameLayout>
