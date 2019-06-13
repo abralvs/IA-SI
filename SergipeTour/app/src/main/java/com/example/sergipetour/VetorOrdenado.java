@@ -38,7 +38,6 @@ public class VetorOrdenado {
             this.cidades[pos] = cidade;
             this.numElementos++;
         }
-
     }
 
     public Cidade getPrimeiro(){
@@ -46,8 +45,16 @@ public class VetorOrdenado {
     }
 
     public void mostrar(int idObjetivo){
+        int id=0;
         for(int i=0;i<numElementos;i++){
-            System.out.println("\t"+this.cidades[i].getNome()+" "+ this.cidades[i].getId() +" - "+ this.cidades[i].getDistancias().get(idObjetivo).distancia);
+            ArrayList<Distancia> d = this.cidades[i].getDistancias();
+            for(int j=0;j<d.size();j++){
+                if(d.get(j).idCidade == idObjetivo){
+                    id = j;
+                    break;
+                }
+            }
+            System.out.println("\t"+this.cidades[i].getNome()+" "+ this.cidades[i].getId() +" - "+ this.cidades[i].getDistancias().get(id).distancia);
         }
     }
 }
