@@ -28,7 +28,7 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Cidades citys;
+    private Cidades cities;
     private ImageButton btnTodasAdjacencias;
     private boolean mostrandoTodasAdj = false;
     private List<Polyline> arestas = new ArrayList<>();
@@ -66,7 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         destino.setAdapter(adapter);
 
         AssetManager assetManager = getResources().getAssets();
-        citys = new Cidades(assetManager);
+        cities = new Cidades(assetManager);
     }
 
     /**
@@ -88,11 +88,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Adicionando todos os marcadores
         Marker m;
-        for (int i = 0; i < citys.getCidades().size();i++) {
-            mMap.addMarker(new MarkerOptions().position(citys.getCidades()
+        for (int i = 0; i < cities.getCidades().size();i++) {
+            mMap.addMarker(new MarkerOptions().position(cities.getCidades()
                     .get(i)
                     .getCoordenadas())
-                    .title(citys.getCidades().get(i).getNome()));
+                    .title(cities.getCidades().get(i).getNome()));
         }
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-10.6826,-37.4273),10));
@@ -122,6 +122,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for (Cidade c: gulosa.getCaminho())
                     pontos.add(c.getCoordenadas());
 
+                for(Cidade cidade : cities.getCidades())
+                    cidade.setVisitado(false); //para quando for selecionar uma rota com a mesma cidade q ja foi procurada
+
                 rota.add(mMap.addPolyline(new PolylineOptions()
                         .addAll(pontos)
                         .width(5)
@@ -139,10 +142,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (!mostrandoTodasAdj) {
                     mostrandoTodasAdj = true;
                     pontos = new ArrayList<>();
-                    for (int i = 0; i < citys.getCidades().size(); i++) {
-                        pontos.add(citys.getCidades().get(i).getCoordenadas());
-                        for (int j = 0; j < citys.getCidades().get(i).getAdj().size(); j++) {
-                            pontos.add(citys.getCidades().get(i).getAdj().get(j).getCidade().getCoordenadas());
+                    for (int i = 0; i < cities.getCidades().size(); i++) {
+                        pontos.add(cities.getCidades().get(i).getCoordenadas());
+                        for (int j = 0; j < cities.getCidades().get(i).getAdj().size(); j++) {
+                            pontos.add(cities.getCidades().get(i).getAdj().get(j).getCidade().getCoordenadas());
 
                             arestas.add(mMap.addPolyline(new PolylineOptions()
                                     .addAll(pontos)
@@ -211,12 +214,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void pegaCidadesEcolhidas(){
         // pegando indices das ciades
-        for (int i = 0; i < citys.getCidades().size(); i++) {
-            if (citys.getCidades().get(i).getNome().equals(inicio.getSelectedItem().toString()))
-                initAux = citys.getCidades().get(i);
+        for (int i = 0; i < cities.getCidades().size(); i++) {
+            if (cities.getCidades().get(i).getNome().equals(inicio.getSelectedItem().toString()))
+                initAux = cities.getCidades().get(i);
 
-            if (citys.getCidades().get(i).getNome().equals(destino.getSelectedItem().toString()))
-                destAux = citys.getCidades().get(i);
+            if (cities.getCidades().get(i).getNome().equals(destino.getSelectedItem().toString()))
+                destAux = cities.getCidades().get(i);
         }
     }
 

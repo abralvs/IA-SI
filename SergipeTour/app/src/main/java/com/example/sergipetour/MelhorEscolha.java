@@ -7,6 +7,7 @@ public class MelhorEscolha {
     private VetorOrdenado fronteira;
 
     public MelhorEscolha() {
+
         this.caminho = new ArrayList<>();
         this.achou = false;
     }
@@ -39,8 +40,6 @@ public class MelhorEscolha {
     }
 
     public ArrayList<Cidade> getCaminho() {
-        for(Cidade cidade : caminho)
-            cidade.setVisitado(false); //para quando for selecionar uma rota com a mesma cidade q ja foi procurada
         return caminho;
     }
 }
