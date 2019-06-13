@@ -119,8 +119,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         getCoordenadas().latitude, initAux.getCoordenadas().longitude), 10)); //camera no inicio
 
                 pontos = new ArrayList<>();
-                for (Cidade c: gulosa.getCaminho())
+                for (Cidade c: gulosa.getCaminho()) {
                     pontos.add(c.getCoordenadas());
+                    System.out.println(c.getNome());
+                }
 
                 for(Cidade cidade : cities.getCidades())
                     cidade.setVisitado(false); //para quando for selecionar uma rota com a mesma cidade q ja foi procurada
