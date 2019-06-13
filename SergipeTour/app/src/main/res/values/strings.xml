@@ -1,4 +1,81 @@
 <resources>
     <string name="app_name">SergipeTour</string>
     <string name="title_activity_maps">Map</string>
+    <string-array name="planets_array">
+        <item>Amparo de São Francisco</item>
+        <item>Aquidabã</item>
+        <item>Aracaju</item>
+        <item>Arauá</item>
+        <item>Areia Branca</item>
+        <item>Barra dos Coqueiros</item>
+        <item>Boquim</item>
+        <item>Brejo Grande</item>
+        <item>Campo do Brito</item>
+        <item>Canhoba</item>
+        <item>Canindé de São Francisco</item>
+        <item>Capela</item>
+        <item>Carira</item>
+        <item>Carmópolis</item>
+        <item>Cedro de São João</item>
+        <item>Cristinápolis</item>
+        <item>Cumbe</item>
+        <item>Divina Pastora</item>
+        <item>Estância</item>
+        <item>Feira Nova</item>
+        <item>Frei Paulo</item>
+        <item>Gararu</item>
+        <item>General Maynard</item>
+        <item>Gracho Cardoso</item>
+        <item>Ilha das Flores</item>
+        <item>Indiaroba</item>
+        <item>Itabaiana</item>
+        <item>Itabaianinha</item>
+        <item>Itabi</item>
+        <item>Itaporanga d\'Ajuda</item>
+        <item>Japaratuda</item>
+        <item>Japoatã</item>
+        <item>Lagarto</item>
+        <item>Laranjeiras</item>
+        <item>Macambira</item>
+        <item>Malhada dos Bois</item>
+        <item>Malhador</item>
+        <item>Maruim</item>
+        <item>Moita Bonita</item>
+        <item>Monte Alegre de Sergipe</item>
+        <item>Muribeca</item>
+        <item>Neápolis</item>
+        <item>Nossa Senhora Aparecida</item>
+        <item>Nossa Senhora da Glória</item>
+        <item>Nossa Senhora das Dores</item>
+        <item>Nossa Senhora de Lourdes</item>
+        <item>Nossa Senhora do Socorro</item>
+        <item>Pacatuba</item>
+        <item>Pedra Mole</item>
+        <item>Pedrinhas</item>
+        <item>Pinhão</item>
+        <item>Pirambu</item>
+        <item>Poço Redondo</item>
+        <item>Poço Verde</item>
+        <item>Porto da Folha</item>
+        <item>Propriá</item>
+        <item>Riachão do Dantas</item>
+        <item>Riachuelo</item>
+        <item>Ribeirópolis</item>
+        <item>Rosário do Catete</item>
+        <item>Salgado</item>
+        <item>Santa Luzia do Itanhy</item>
+        <item>Santana do São Francisco</item>
+        <item>Santa Rosa de Lima</item>
+        <item>Santo Amaro das Brotas</item>
+        <item>São Cristovão</item>
+        <item>São Domingos</item>
+        <item>São Francisco</item>
+        <item>São Miguel do Aleixo</item>
+        <item>Simão Dias</item>
+        <item>Siriri</item>
+        <item>Telha</item>
+        <item>Tobias Barreto</item>
+        <item>Tomar do Geru</item>
+        <item>Umbaúba</item>
+    </string-array>
 </resources>
