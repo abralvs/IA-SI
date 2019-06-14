@@ -1,5 +1,7 @@
 package com.example.sergipetour;
 
+import android.annotation.SuppressLint;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -78,4 +80,14 @@ public class Cidade {
     public void setIdAdj(ArrayList<Integer> idAdj) {
         this.idAdj = idAdj;
     }
+
+    @SuppressLint("DefaultLocale")
+    public String getDistanciaAdj(int id){
+        for(Distancia d : getDistancias()){
+            if(d.idCidade == id)
+                return String.format("h: %.2f",d.distancia);
+        }
+        return null;
+    }
+
 }

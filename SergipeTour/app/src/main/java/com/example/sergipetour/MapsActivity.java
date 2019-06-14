@@ -15,12 +15,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<Polyline> rota = new ArrayList<>();
     private List<Polyline> arvoreDebug = new ArrayList<>();
     private List<Polyline> caminhoDebug = new ArrayList<>();
+    private List<MarkerOptions> distanciasH = new ArrayList<>();
     private ImageButton btnGerarRota;
     private ArrayList<LatLng> pontos;
     private Spinner inicio;
@@ -104,6 +107,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     for(Polyline rot : rota)
                         rot.remove();
                     rota.clear();
+                    limpaAresta();
+
                 }
                 System.out.println(rota.size());
 
@@ -191,6 +196,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     .width(5)
                                     .color(Color.RED)));
 
+                            LatLng latLng = new LatLng(c.getAdj().get(i).getCidade().getCoordenadas()
+                                    .latitude-0.03, c.getAdj().get(i).getCidade().getCoordenadas()
+                                    .longitude);
+                            String distancia = c.getAdj().get(i).getCidade().getDistanciaAdj(destAux.getId());
+
+                                distanciasH.add(new MarkerOptions().position(latLng)
+                                    .title(distancia).icon(BitmapDescriptorFactory
+                                            .fromResource(R.mipmap.hr)));
                             pontos.remove(1);
                         }
                         pontos.removeAll(pontos);
@@ -200,13 +213,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // -----------------------------------------------------------
 
                     pontos.removeAll(pontos);
-                    for (Cidade ci: gulosa.getCaminho())
+                    for (Cidade ci: gulosa.getCaminho()) {
                         pontos.add(ci.getCoordenadas());
+                        LatLng latLng = new LatLng(c.getCoordenadas().latitude-0.03, c.getCoordenadas().longitude);
+                        String distancia = c.getDistanciaAdj(destAux.getId());
+
+                            distanciasH.add(new MarkerOptions().position(latLng)
+                                .title(distancia).icon(BitmapDescriptorFactory
+                                        .fromResource(R.mipmap.hr)));
+
+                    }
 
                     caminhoDebug.add(mMap.addPolyline(new PolylineOptions()
                             .addAll(pontos)
                             .width(5)
                             .color(Color.BLUE)));
+
+                    for(MarkerOptions m : distanciasH){
+
+                        if(m.getPosition().latitude != (destAux.getCoordenadas().latitude-0.03) &&
+                            m.getPosition().longitude != destAux.getCoordenadas().longitude)
+                            mMap.addMarker(m);
+                    }
+
+
                     pontos.removeAll(pontos);
                 }
             }
