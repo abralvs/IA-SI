@@ -35,7 +35,7 @@ public class Cidades {
             InputStream inputStream = assetManager.open("cidades.csv");
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bw = new BufferedReader(inputStreamReader);
-
+            boolean cidadeRepetida = false;
             String linha = bw.readLine();
             int id = 1;
             ArrayList<Cidade> cidadesTemp = new ArrayList<>();
@@ -45,8 +45,9 @@ public class Cidades {
                 String[] dados = linha.split(",");
                 Cidade cidade = new Cidade(id, dados[0], new LatLng(Double.parseDouble(dados[1]), Double.parseDouble(dados[2]))); //id, nome, lat, lon, adj
                 if(dados.length >= 4)                          // se tiver cidade adj entra no laco, já que a informacao está a partir do indice 3
-                    for(int i = 3; i < dados.length; i++)
+                    for(int i = 3; i < dados.length; i++) {
                         idAdj.add(Integer.parseInt(dados[i]));    //adicionando os id's das cidades adj.
+                    }
 
                 cidade.setIdAdj(idAdj);  //setando o arraylist de id's de cidades adj do obj cidade.
                 cidadesTemp.add(cidade);

@@ -30,7 +30,7 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Cidades cities;
+    public static Cidades cities;
     private ImageButton btnTodasAdjacencias;
     private boolean mostrandoTodasAdj = false;
     private List<Polyline> arestas = new ArrayList<>();
@@ -90,7 +90,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         this, R.raw.style));
 
         // Adicionando todos os marcadores
-        Marker m;
         for (int i = 0; i < cities.getCidades().size();i++) {
             mMap.addMarker(new MarkerOptions().position(cities.getCidades()
                     .get(i)
@@ -115,6 +114,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 pegaCidadesEcolhidas();
                 Toast.makeText(getBaseContext(),"init: "+initAux.getNome()+"  destino: "+destAux.getNome()
                         +" - id: "+destAux.getId(),Toast.LENGTH_LONG).show();
+
+                for(Cidade cidade : cities.getCidades())
+                    cidade.setVisitado(false); //para quando for selecionar uma rota com a mesma cidade q ja foi procurada
+
                 // chamando método guloso
                 MelhorEscolha gulosa = new MelhorEscolha();
                 gulosa.Buscar(initAux, destAux.getId());
@@ -129,9 +132,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     System.out.println(c.getNome());
                 }
 
-                for(Cidade cidade : cities.getCidades())
-                    cidade.setVisitado(false); //para quando for selecionar uma rota com a mesma cidade q ja foi procurada
-
                 rota.add(mMap.addPolyline(new PolylineOptions()
                         .addAll(pontos)
                         .width(5)
@@ -139,6 +139,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 pontos.clear();
                 System.out.println(pontos.size());
+
+
             }
         });
 

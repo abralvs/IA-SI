@@ -2,11 +2,20 @@ package com.example.sergipetour;
 
 public class Distancia {
     int idCidade;
+    int idReferencia;
     double distancia;
 
     public Distancia(int idCidade, double distancia) {
         this.idCidade = idCidade;
         this.distancia = distancia;
+    }
+
+    public int getIdReferencia() {
+        return idReferencia;
+    }
+
+    public void setIdReferencia(int idReferencia) {
+        this.idReferencia = idReferencia;
     }
 
     public int getIdCidade() {
@@ -24,4 +33,5 @@ public class Distancia {
     public void setDistancia(double distancia) {
         this.distancia = distancia;
     }
+
 }
