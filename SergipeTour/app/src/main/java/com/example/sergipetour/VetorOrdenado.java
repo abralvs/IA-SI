@@ -1,7 +1,4 @@
 package com.example.sergipetour;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.example.sergipetour.MapsActivity.cities;
 
@@ -15,13 +12,11 @@ public class VetorOrdenado {
     public void inserir(Cidade cidade, int idObjetivo){
         int id = -1;
 
-        System.out.println("sleep");
         for(Distancia d : cidade.getDistancias()) {
             if (d.idCidade == idObjetivo) {
                 id = d.idCidade;
                 for (Adjacencia ad : cidade.getAdj()) {
-                    if (ad.getCidade().getId() == id) {
-                        System.out.println("SIm cidade " + cidade.getId());  //verifica se a cidade é adj ao objetivo
+                    if (ad.getCidade().getId() == id) {       //verifica se a cidade é adj ao objetivo
                         city = ad.getCidade();
                         break;
                     }
@@ -45,9 +40,7 @@ public class VetorOrdenado {
                     }
             for (Cidade cid : cities.getCidades())
                 if (cid.getId() == tempDistancias[0].getIdReferencia()) {    //como foi ordenado, ele pega a primeira distancia, que é a menor.
-                    System.out.println("opa cidade " + tempDistancias[0].getIdReferencia());  //pega a cidade que tem essa menor distancia.
-                    //                    city = cid;
-                    break;
+                    break;                                                   //pega a cidade que tem essa menor distancia.
                 }
         }
     }
@@ -55,19 +48,5 @@ public class VetorOrdenado {
     public Cidade getPrimeiro(){
         return this.city;
     }
-
-  /*  public void mostrar(int idObjetivo){
-        int id=0;
-        for(int i=0;i<numElementos;i++){
-            ArrayList<Distancia> d = this.cidades[i].getDistancias();
-            for(int j=0;j<d.size();j++){
-                if(d.get(j).idCidade == idObjetivo){
-                    id = j;
-                    break;
-                }
-            }
-            System.out.println("\t"+this.cidades[i].getNome()+" "+ this.cidades[i].getId() +" - "+ this.cidades[i].getDistancias().get(id).distancia);
-        }
-    } */
 
 }

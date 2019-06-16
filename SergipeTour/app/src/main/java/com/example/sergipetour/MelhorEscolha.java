@@ -23,11 +23,9 @@ public class MelhorEscolha {
             this.fronteira = new VetorOrdenado();
             this.fronteira.inserir(origem, idObjetivo);
             }
-            //this.fronteira.mostrar(idObjetivo);
             if(this.fronteira.getPrimeiro() != null && !this.achou){
                 System.out.println(this.fronteira.getPrimeiro());
                 this.Buscar(this.fronteira.getPrimeiro(), idObjetivo);
-                System.out.println("vu busc ");
             }
     }
 
