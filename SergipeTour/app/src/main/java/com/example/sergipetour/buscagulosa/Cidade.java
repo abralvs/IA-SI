@@ -1,4 +1,4 @@
-package com.example.sergipetour;
+package com.example.sergipetour.buscagulosa;
 
 import android.annotation.SuppressLint;
 

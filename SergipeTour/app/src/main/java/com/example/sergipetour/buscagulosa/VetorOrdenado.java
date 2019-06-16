@@ -1,6 +1,6 @@
-package com.example.sergipetour;
+package com.example.sergipetour.buscagulosa;
 
-import static com.example.sergipetour.MapsActivity.cities;
+import static com.example.sergipetour.view.MapsActivity.cities;
 
 public class VetorOrdenado {
     private Cidade city;

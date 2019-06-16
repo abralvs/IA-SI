@@ -1,6 +1,5 @@
-package com.example.sergipetour;
+package com.example.sergipetour.view;
 
-import android.Manifest;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
@@ -9,8 +8,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.Toast;
-
+import com.example.sergipetour.buscagulosa.Cidade;
+import com.example.sergipetour.buscagulosa.Cidades;
+import com.example.sergipetour.buscagulosa.MelhorEscolha;
+import com.example.sergipetour.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -18,12 +19,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.android.ui.IconGenerator;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +41,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Spinner inicio;
     private Spinner destino;
     private ImageButton btnDebug;
-    Cidade initAux = null, destAux = null;
+    private Cidade initAux = null, destAux = null;
+    private boolean rotaSolicitada = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,30 +90,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         this, R.raw.style));
 
         // Adicionando todos os marcadores
-        for (int i = 0; i < cities.getCidades().size();i++) {
-            mMap.addMarker(new MarkerOptions().position(cities.getCidades()
-                    .get(i)
-                    .getCoordenadas())
-                    .title(cities.getCidades().get(i).getNome()));
-        }
+        this.addMarcadore();
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-10.6826,-37.4273),10));
 
         btnGerarRota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(rota.size() > 0) {
-                    for(Polyline rot : rota)
-                        rot.remove();
-                    rota.clear();
-                    limpaAresta();
-
+                if (rotaSolicitada) {
+                    mMap.clear();
+                    removeHeuristica();
+                    addMarcadore();
                 }
+
                 System.out.println(rota.size());
 
                 pegaCidadesEcolhidas();
-                Toast.makeText(getBaseContext(),"init: "+initAux.getNome()+"  destino: "+destAux.getNome()
-                        +" - id: "+destAux.getId(),Toast.LENGTH_LONG).show();
+
+               /* Toast.makeText(getBaseContext(),"init: "+initAux.getNome()+"  destino: "+destAux.getNome()
+                        +" - id: "+destAux.getId(),Toast.LENGTH_LONG).show();*/
 
                 for(Cidade cidade : cities.getCidades())
                     cidade.setVisitado(false); //para quando for selecionar uma rota com a mesma cidade q ja foi procurada
@@ -132,15 +127,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     System.out.println(c.getNome());
                 }
 
-                rota.add(mMap.addPolyline(new PolylineOptions()
-                        .addAll(pontos)
-                        .width(5)
-                        .color(Color.BLUE)));
+                addPolylinesBlue(rota,pontos);
 
                 pontos.clear();
                 System.out.println(pontos.size());
-
-
+                rotaSolicitada = true;
             }
         });
 
@@ -148,6 +139,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnTodasAdjacencias.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (rotaSolicitada) {
+                    mMap.clear();
+                    removeHeuristica();
+                    addMarcadore();
+                }
+
                 if (!mostrandoTodasAdj) {
                     mostrandoTodasAdj = true;
                     pontos = new ArrayList<>();
@@ -156,21 +153,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         for (int j = 0; j < cities.getCidades().get(i).getAdj().size(); j++) {
                             pontos.add(cities.getCidades().get(i).getAdj().get(j).getCidade().getCoordenadas());
 
-                            arestas.add(mMap.addPolyline(new PolylineOptions()
-                                    .addAll(pontos)
-                                    .width(5)
-                                    .color(Color.RED)));
-                            pontos.remove(1);
+                            addPolylinesRed(arestas,pontos);
+
                         }
                         pontos.removeAll(pontos);
                     }
                 }
                 else{
-                    for(Polyline aresta : arestas){
-                        aresta.remove();
-                    }
+                    arestas.clear();
                     mostrandoTodasAdj = false;
                 }
+                rotaSolicitada = true;
             }
         });
 
@@ -178,9 +171,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         btnDebug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(arvoreDebug.size() > 0) {
-                    limpaAresta();
+                if (rotaSolicitada) {
+                    mMap.clear();
+                    removeHeuristica();
+                    addMarcadore();
                 }
+
 
                 pegaCidadesEcolhidas();
                 MelhorEscolha gulosa = new MelhorEscolha();
@@ -193,10 +189,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         pontos.add(c.getCoordenadas());
                         for (int i = 0; i < c.getAdj().size(); i++) {
                             pontos.add(c.getAdj().get(i).getCidade().getCoordenadas());
-                            arvoreDebug.add(mMap.addPolyline(new PolylineOptions()
-                                    .addAll(pontos)
-                                    .width(5)
-                                    .color(Color.RED)));
+
+                            addPolylinesRed(arvoreDebug, pontos);
+
 
                             LatLng latLng = new LatLng(c.getAdj().get(i).getCidade().getCoordenadas()
                                     .latitude-0.03, c.getAdj().get(i).getCidade().getCoordenadas()
@@ -210,9 +205,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                         pontos.removeAll(pontos);
                     }
-                    // adicionando apenas a linha que leva ao destino com uma cor diferente
 
                     // -----------------------------------------------------------
+                    // adicionando apenas a linha que leva ao destino com uma cor diferente
 
                     pontos.removeAll(pontos);
                     for (Cidade ci: gulosa.getCaminho()) {
@@ -226,10 +221,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     }
 
-                    caminhoDebug.add(mMap.addPolyline(new PolylineOptions()
-                            .addAll(pontos)
-                            .width(5)
-                            .color(Color.BLUE)));
+                    addPolylinesBlue(caminhoDebug,pontos);
 
                     for(MarkerOptions m : distanciasH){
 
@@ -241,6 +233,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     pontos.removeAll(pontos);
                 }
+                rotaSolicitada = true;
+
             }
         });
 
@@ -257,12 +251,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void limpaAresta(){
+    public void addMarcadore(){
+        for (int i = 0; i < cities.getCidades().size();i++) {
+            mMap.addMarker(new MarkerOptions().position(cities.getCidades()
+                    .get(i)
+                    .getCoordenadas())
+                    .title(cities.getCidades().get(i).getNome()));
+        }
+    }
 
-        for (Polyline no : arvoreDebug)   //caso tenha arvore tracada remove
-            no.remove();
+    public  void addPolylinesRed(List<Polyline> poly, ArrayList<LatLng> pontos){
+        poly.add(mMap.addPolyline(new PolylineOptions()
+                .addAll(pontos)
+                .width(5)
+                .color(Color.RED)));
+    }
 
-        for(Polyline caminho : caminhoDebug)  //remove o caminho
-            caminho.remove();
+    public  void addPolylinesBlue(List<Polyline> poly, ArrayList<LatLng> pontos){
+        poly.add(mMap.addPolyline(new PolylineOptions()
+                .addAll(pontos)
+                .width(5)
+                .color(Color.BLUE)));
+    }
+
+    public void removeHeuristica(){
+        if (distanciasH.size() > 0)
+            distanciasH.clear();
     }
 }
