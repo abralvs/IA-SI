@@ -24,7 +24,7 @@ public class MelhorEscolha {
             this.fronteira.inserir(origem, idObjetivo);
             }
             if(this.fronteira.getPrimeiro() != null && !this.achou){
-                System.out.println(this.fronteira.getPrimeiro());
+                System.out.println("get " +this.fronteira.getPrimeiro().getNome());
                 this.Buscar(this.fronteira.getPrimeiro(), idObjetivo);
             }
     }

@@ -39,7 +39,8 @@ public class VetorOrdenado {
                         tempDistancias[j] = tmp;
                     }
             for (Cidade cid : cities.getCidades())
-                if (cid.getId() == tempDistancias[0].getIdReferencia()) {    //como foi ordenado, ele pega a primeira distancia, que é a menor.
+                if (cid.getId() == tempDistancias[0].getIdReferencia()) {
+                    city = cid;                                                //como foi ordenado, ele pega a primeira distancia, que é a menor.
                     break;                                                   //pega a cidade que tem essa menor distancia.
                 }
         }
