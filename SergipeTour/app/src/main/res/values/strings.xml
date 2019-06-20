@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">SergipeTour</string>
-    <string name="title_activity_maps">Map</string>
     <string-array name="planets_array">
         <item>Amparo de São Francisco</item>
         <item>Aquidabã</item>

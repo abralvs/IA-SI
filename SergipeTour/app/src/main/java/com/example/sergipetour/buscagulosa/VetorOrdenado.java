@@ -12,18 +12,15 @@ public class VetorOrdenado {
     public void inserir(Cidade cidade, int idObjetivo){
         int id = -1;
 
-        for(Distancia d : cidade.getDistancias()) {
+        for(Distancia d : cidade.getDistancias())
             if (d.idCidade == idObjetivo) {
                 id = d.idCidade;
-                for (Adjacencia ad : cidade.getAdj()) {
+                for (Adjacencia ad : cidade.getAdj())
                     if (ad.getCidade().getId() == id) {       //verifica se a cidade é adj ao objetivo
                         city = ad.getCidade();
                         break;
                     }
-                }
-
             }
-        }
 
         if (city == null) {
             Distancia[] tempDistancias = new Distancia[cidade.getAdj().size()];
@@ -45,9 +42,7 @@ public class VetorOrdenado {
                 }
         }
     }
-
-    public Cidade getPrimeiro(){
+    public Cidade getCity(){                                                //get retornar para a cidade
         return this.city;
     }
-
 }

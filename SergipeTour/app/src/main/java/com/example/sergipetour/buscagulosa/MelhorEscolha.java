@@ -23,9 +23,9 @@ public class MelhorEscolha {
             this.fronteira = new VetorOrdenado();
             this.fronteira.inserir(origem, idObjetivo);
             }
-            if(this.fronteira.getPrimeiro() != null && !this.achou){
-                System.out.println("get " +this.fronteira.getPrimeiro().getNome());
-                this.Buscar(this.fronteira.getPrimeiro(), idObjetivo);
+            if(this.fronteira.getCity() != null && !this.achou){
+                System.out.println("get " +this.fronteira.getCity().getNome());
+                this.Buscar(this.fronteira.getCity(), idObjetivo);
             }
     }
 
